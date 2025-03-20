@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="27-02-2025-create-table-products" author="Rusya235">
+        <createTable tableName="products">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text">
+                <constraints nullable="true"/>
+            </column>
+            <column name="price" type="decimal(10,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_active" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="27-02-2025-create-table-categories" author="Rusya235">
+        <createTable tableName="categories">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="description" type="text">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="27-02-2025-create-table-product-categories" author="Rusya235">
+        <createTable tableName="product_categories">
+            <column name="product_id" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_product_categories_products" references="products(id)"/>
+            </column>
+            <column name="category_id" type="uuid">
+                <constraints nullable="false" foreignKeyName="fk_product_categories_categories" references="categories(id)"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey tableName="product_categories" columnNames="product_id, category_id" constraintName="pk_product_categories"/>
+    </changeSet>
+
+    <changeSet id="27-02-2025-create-table-product-images" author="Rusya235">
+        <createTable tableName="product_images">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="product_id" type="uuid">
+                <constraints nullable="true" foreignKeyName="fk_product_images_products" references="products(id)"/>
+            </column>
+            <column name="image_url" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_primary" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name = "created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name = "updated_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="27-02-2025-create-indexes" author="Rusya235">
+        <createIndex tableName="products" indexName="idx_products_created_by">
+            <column name="created_by"/>
+        </createIndex>
+        <createIndex tableName="product_categories" indexName="idx_product_categories_product_id">
+            <column name="product_id"/>
+        </createIndex>
+        <createIndex tableName="product_categories" indexName="idx_product_categories_category_id">
+            <column name="category_id"/>
+        </createIndex>
+        <createIndex tableName="product_images" indexName="idx_product_images_product_id">
+            <column name="product_id"/>
+        </createIndex>
+        <createIndex tableName="product_images" indexName="idx_product_images_is_primary">
+            <column name="is_primary"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

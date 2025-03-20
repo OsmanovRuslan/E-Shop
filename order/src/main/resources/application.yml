@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: order-service
+
+  kafka:
+    bootstrap-servers: localhost:9092, localhost:9094
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      properties:
+        linger.ms: 0
+        enable:
+          idempotence: true
+        max.in.flight.requests.per.connection: 5
+
+  data:
+    mongodb:
+      uri: mongodb://mongo:mongo@localhost:27017/order_db?authSource=admin
+      database: order_db
+      username: mongo
+      password: mongo
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
+server:
+  port: 0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

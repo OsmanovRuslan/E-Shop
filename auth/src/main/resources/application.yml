@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: auth-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/e-shop
+
+server:
+  port: 0
+
+keycloak:
+  server-url: http://localhost:8080
+  realm: e-shop
+  client-id: auth-service
+  client-secret: 5UsTa9n28uTlDC5QutXD9n8yN9GTqC8Y
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+admin:
+  secret-code: "admin-secret"
+
+manager:
+  secret-code: "manager-secret"
